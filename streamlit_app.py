@@ -5,3 +5,42 @@ st.write(
     "Let's start building! For help and inspiration, head over to [docs.streamlit.io](https://docs.streamlit.io/)."
 )
 https://api.open-meteo.com/v1/forecast?latitude=37.5665&longitude=126.9780&daily=temperature_2m_mean,relativehumidity_2m_mean,precipitation_sum&timezone=Asia/Seoul&start_date=2023-01-01&end_date=2023-12-31&format=csv
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# 读取 CSV
+df = pd.read_csv("weather.csv")
+
+# 转换日期格式
+df["time"] = pd.to_datetime(df["time"])
+
+# 数据预览
+print(df.head())
+print(df.describe())
+
+# -------- 气温折线图 --------
+plt.figure(figsize=(12,5))
+plt.plot(df["time"], df["temperature_2m_mean"], color='red')
+plt.title("首尔每日气温变化")
+plt.xlabel("日期")
+plt.ylabel("气温 (°C)")
+plt.grid()
+plt.show()
+
+# -------- 湿度折线图 --------
+plt.figure(figsize=(12,5))
+plt.plot(df["time"], df["relativehumidity_2m_mean"], color='blue')
+plt.title("首尔每日湿度变化")
+plt.xlabel("日期")
+plt.ylabel("湿度 (%)")
+plt.grid()
+plt.show()
+
+# -------- 降雨量柱状图 --------
+plt.figure(figsize=(12,5))
+plt.bar(df["time"], df["precipitation_sum"], color='green')
+plt.title("首尔每日降雨量")
+plt.xlabel("日期")
+plt.ylabel("降水量 (mm)")
+plt.grid()
+plt.show()
